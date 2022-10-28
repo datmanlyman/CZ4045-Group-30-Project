@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { companies }  from './Companies';
+import { DropdownContext } from '../Utils/DropdownContext';
 
 export const Dropdown = () => {
-    const [open, setOpen] = useState(false);
-    const [display, setDisplay] = useState('default');
+    const {open, setOpen, display, setDisplay} = useContext(DropdownContext);
 
     const handleOpen = () => {
         setOpen(!open);

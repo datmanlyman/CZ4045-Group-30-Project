@@ -1,7 +1,9 @@
-import { Dropdown } from "./Dropdown";
+import { useContext } from "react";
+import { DropdownContext } from "../Utils/DropdownContext";
 
 export const CompanyData = () => {
-    switch (Dropdown.display) {
+    const { display } = useContext(DropdownContext);
+    switch (display) {
         case "AETOS":
             return (<p>a</p>);
         case "Charles & Keith":

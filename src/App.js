@@ -4,12 +4,12 @@ import { Report } from './Page/Report';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route index element={<Data/>} />
-        <Route path="report" element={<Report/>} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route index element={<Data/>} />
+          <Route path="report" element={<Report/>} />
+        </Routes>
+      </Router>
   );
 }
 
