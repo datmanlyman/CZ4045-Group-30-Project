@@ -17,7 +17,7 @@ export default function Navbar() {
     return (
         <nav className="nav">
             <Link to="/report" className="site-title">
-                Site Name
+                Glassdoor Analysis
             </Link>
             <ul>
                 <CustomLink to="/report">Report</CustomLink>

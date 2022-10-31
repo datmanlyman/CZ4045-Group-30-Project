@@ -1,0 +1,4 @@
+Average Rating: nan
+Objective Count: 30
+Positive Sentiment Count: 1
+Negative Sentiment Count: 14

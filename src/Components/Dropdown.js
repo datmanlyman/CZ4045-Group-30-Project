@@ -18,7 +18,7 @@ export const Dropdown = () => {
             <button onClick={ handleOpen }>Dropdown</button>
             {open ? (
                 <ul className='menu1'>
-                    <li className='default'><button>Default</button></li>
+                    <li className='default' onClick={() => {handleClick("default"); handleOpen();}}><button>Default</button></li>
                     <p><b>Companies</b></p>
                     {companies.map((company, index) => {
                         return (
