@@ -1,4 +1,4 @@
 Average Rating: nan
-Objective Count: 93
-Positive Sentiment Count: 11
-Negative Sentiment Count: 35
+Objective Count: 69
+Positive Sentiment Count: 20
+Negative Sentiment Count: 13
