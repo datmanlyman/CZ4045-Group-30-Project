@@ -235,14 +235,21 @@ export const CompanyData = () => {
 
     return (
         <>
-            <h1>Click on below button to download CSV files for the company</h1>
-            <button onClick={() => getFiles(file1, file2)}>Download Data</button>
-            <h1>Positive</h1>
-            <img src={img1} alt="" />
-            <h1>Objective</h1>
-            <img src={img2} alt="" />
-            <h1>Negative</h1>
-            <img src={img3} alt="" />
+            <h5>Click on the button below to download CSV files for the company you have chosen</h5>
+            <button className="download" onClick={() => getFiles(file1, file2)}><b>Download Data</b></button>
+            <h5>Here are the wordclouds for the different sentiments for the company you have chosen</h5>
+            <div>
+                <h2>Subjective (Positive Sentiment)</h2>
+                <img src={img1} alt="" />
+            </div>
+            <div>
+                <h2>Subjective (Negative Sentiment)</h2>
+                <img src={img3} alt="" />
+            </div>
+            <div>
+                <h2>Objective</h2>
+                <img src={img2} alt="" />
+            </div>
         </>
     );
 }
