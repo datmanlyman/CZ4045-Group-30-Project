@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableBody, styled, tableCellClasses } from "@mui/material";
 import Papa from "papaparse";
+import { DataGrid } from '@mui/x-data-grid';
 import CSVReader from "react-csv-reader";
 import { 
     overall_negative, overall_objective, overall_positive, overall_extremes_objective, overall_extremes_subjective,
@@ -34,7 +35,7 @@ export const CompanyData = () => {
     const [title, setTitle] = useState('None');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [CSVData, setCSVData] = useState();
+    const [CSVData, setCSVData] = useState([]);
     const { display } = useContext(DropdownContext);
     var img1 = overall_positive;
     var img2 = overall_objective;
@@ -53,7 +54,8 @@ export const CompanyData = () => {
                 const fileURL = window.URL.createObjectURL(blob);
                 let alink = document.createElement('a');
                 alink.href = fileURL;
-                alink.download = file1, file2;
+                // alink.download = file1, file2;
+                alink.download = file1;
                 alink.click();
             })
         });
@@ -76,12 +78,12 @@ export const CompanyData = () => {
     }
 
     const getCsvData = async (file) => {
-        Papa.parse(
+        await Papa.parse(
             file,
             {
                 download: true,
                 complete: (result) => {
-                    setCSVData(result.data);
+                    setCSVData(convertToJSON(result.data));
                 }
             }
         )
@@ -124,7 +126,7 @@ export const CompanyData = () => {
                 }
             }
         ); */
-        console.log(CSVData);
+        // console.log(CSVData);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -318,6 +320,35 @@ export const CompanyData = () => {
             break;
     }
 
+    // data table
+    useEffect(()=>{
+        getCsvData(file1)
+    }, [])
+
+    function convertToJSON(array) {
+        var objArray = [];
+        for (var i = 1; i < array.length; i++) {
+          objArray[i - 1] = {};
+          for (var k = 0; k < array[0].length && k < array[i].length; k++) {
+            var key = array[0][k];
+            objArray[i - 1][key] = array[i][k]
+          }
+        }
+      
+        return objArray;
+      }
+
+    const columns = [
+        { field: '', headerName: 'ID', width: 70 },
+        { field: 'company', headerName: 'Company', width: 90 },
+        { field: 'date', headerName: 'Date', width: 100 },
+        { field: 'rating',headerName: 'Rating', type: 'number', width: 60 },
+        { field: 'position', headerName: 'Position', width: 150 },
+        { field: 'subjectivity', headerName: 'Subjectivity', width: 90 },
+        { field: 'sentiment', headerName: 'Sentiment', width: 90 },
+        { field: 'text', headerName: 'Review', width: 700 },
+      ];
+      
     return (
         <>
             <div className="row">
@@ -332,6 +363,7 @@ export const CompanyData = () => {
                     <Dropdown.Item id="Management Level" onClick={selectData}>Management Level</Dropdown.Item>
                 </DropdownButton>
                 <button className="download" onClick={() => getFiles(file1, file2)}><b>Download All Data</b></button>
+               
             </div>
             {/* getDataFromFile(title) */}
 
@@ -365,7 +397,14 @@ export const CompanyData = () => {
                     <img className="wordCloud" src={img2} alt="" />
                 </div>
             </div>
-
+            <div style={{ height: 680, width: '100%', marginTop:'20px', marginBottom:'20px', padding:'15px', background:'white' }}>
+                    <DataGrid
+                        rows={CSVData}
+                        columns={columns}
+                        pageSize={10}
+                        getRowId={(row) => row['']}
+                    />
+                </div>
             
         </>
     );
