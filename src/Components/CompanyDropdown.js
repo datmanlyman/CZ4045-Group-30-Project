@@ -13,7 +13,7 @@ export const CompanyDropdown = () => {
 
     return (
         <DropdownButton id="company-button" title={display}>
-            <Dropdown.Item onClick={() => {handleClick("Overall");}}>Default</Dropdown.Item>
+            <Dropdown.Item onClick={() => {handleClick("Overall");}}>Overall</Dropdown.Item>
             {companies.map((company, index) => {
                 return (
                     <Dropdown.Item key={index} onClick={() => (handleClick(company.name))}>

@@ -1,7 +1,9 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { DropdownContext } from "../Utils/DropdownContext";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from "react-bootstrap/DropdownButton";
+import { Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableBody, styled, tableCellClasses } from "@mui/material";
+import Papa from "papaparse";
 
 import { 
     overall_negative, overall_objective, overall_positive, overall_extremes_objective, overall_extremes_subjective,
@@ -30,6 +32,36 @@ import {
 
 export const CompanyData = () => {
     const [title, setTitle] = useState('Objective');
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [CSVData, setCSVData] = useState();
+    const { display } = useContext(DropdownContext);
+    var img1 = overall_positive;
+    var img2 = overall_objective;
+    var img3 = overall_negative;
+    var file1 = overall_extremes_objective;
+    var file2 = overall_extremes_subjective;
+    var columns;
+    var parsedFile = file1;
+    var commonConfig = { delimiter: "," };
+    const handleParse = () => { 
+        // Initialize a reader which allows user
+        // to read any file or blob.
+        const reader = new FileReader();
+         
+        // Event listener on reader when the file
+        // loads, we parse it and set the data.
+        reader.onload = async ({ target }) => {
+            const csv = Papa.parse(target.result, { header: true });
+            console.log(csv);
+            const parsedData = csv?.data;
+            const columns = Object.keys(parsedData[0]);
+            setCSVData(columns);
+        };
+        console.log(CSVData);
+    };
+
+    const table = handleParse();
 
     const getFiles = (file1, file2) => {
         fetch(file1).then(response => {
@@ -53,21 +85,49 @@ export const CompanyData = () => {
         });
     }
 
-    const selectData = (event) => {
+    const selectData = async (event) => {
         const id = event.target.id;
         setTitle(id);
+        await getRows(file1, file2);
     }
+
+    async function getRows(file1, file2) {
+        console.log("hi");
+        switch (title) {
+            case "Subjective":
+                parsedFile = file2;
+                break;
+            case "Entry Level":
+                parsedFile = file1;
+                break;
+            case "Middle Level":
+                parsedFile = file2;
+                break;
+            case "Executive Level":
+                parsedFile = file1;
+                break;
+            case "Management Level":
+                parsedFile = file2;
+                break;
+            default:
+                parsedFile = file1;
+                break;
+        }
+        await handleParse;
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
     /* const getDataFromFile = (title) => {
         switch 
     } */
-
-    const { display } = useContext(DropdownContext);
-    var img1 = overall_positive;
-    var img2 = overall_objective;
-    var img3 = overall_negative;
-    var file1 = overall_extremes_objective;
-    var file2 = overall_extremes_subjective;
 
     switch (display) {
         case "AETOS":
@@ -264,6 +324,68 @@ export const CompanyData = () => {
                 </div>
                 {/* getDataFromFile(title) */}
             </table>
+
+            <h3>Reviews</h3>
+            <table>
+                <thead>
+                    {/*columns.map((column, id) => {
+                        return (
+                            <th key={id}>{column}</th>
+                        );
+                    })*/}
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            { /*<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                <TableContainer sx={{ maxHeight: 440 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                        {columns.map((column) => (
+                            <TableCell
+                                key={column.id}
+                                align={column.align}
+                                style={{ minWidth: column.minWidth }}
+                                >
+                                {column.label}
+                            </TableCell>
+                        ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {CSVData
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row) => {
+                            return (
+                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                {columns.map((column) => {
+                                const value = row[column.id];
+                                return (
+                                    <TableCell key={column.id} align={column.align}>
+                                    {column.format && typeof value === 'number'
+                                        ? column.format(value)
+                                        : value}
+                                    </TableCell>
+                                );
+                                })}
+                            </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 100]}
+                    component="div"
+                    count={CSVData.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+                    </Paper> */ }
 
             <h3>Word Clouds</h3>
             <div className="row">
