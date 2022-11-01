@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableBody, styled, tableCellClasses } from "@mui/material";
 import Papa from "papaparse";
+import CSVReader from "react-csv-reader";
 import { 
     overall_negative, overall_objective, overall_positive, overall_extremes_objective, overall_extremes_subjective,
     AETOS_negative, AETOS_objective, AETOS_positive, AETOS_extremes_objective, AETOS_extremes_subjective,
@@ -30,7 +31,7 @@ import {
  } from "../data/index";
 
 export const CompanyData = () => {
-    const [title, setTitle] = useState('Objective');
+    const [title, setTitle] = useState('None');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [CSVData, setCSVData] = useState();
@@ -40,9 +41,11 @@ export const CompanyData = () => {
     var img3 = overall_negative;
     var file1 = overall_extremes_objective;
     var file2 = overall_extremes_subjective;
-    var columns;
     var parsedFile = file1;
     var commonConfig = { delimiter: "," };
+    var parsedData;
+
+    const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const getFiles = (file1, file2) => {
         fetch(file1).then(response => {
@@ -50,12 +53,12 @@ export const CompanyData = () => {
                 const fileURL = window.URL.createObjectURL(blob);
                 let alink = document.createElement('a');
                 alink.href = fileURL;
-                alink.download = file1;
+                alink.download = file1, file2;
                 alink.click();
             })
         });
 
-        fetch(file2).then(response => {
+        /* fetch(file2).then(response => {
             response.blob().then(blob => {
                 const fileURL = window.URL.createObjectURL(blob);
                 let alink = document.createElement('a');
@@ -63,7 +66,7 @@ export const CompanyData = () => {
                 alink.download = file2;
                 alink.click();
             })
-        });
+        }); */
     }
 
     const selectData = async (event) => {
@@ -71,42 +74,57 @@ export const CompanyData = () => {
         setTitle(id);
         await getRows(file1, file2);
     }
-    
-    async function handleParse() {
-        const json = Papa.parse(
-            parsedFile,
+
+    const getCsvData = async (file) => {
+        Papa.parse(
+            file,
             {
-                ...commonConfig,
-                header: true,
                 download: true,
+                complete: (result) => {
+                    setCSVData(result.data);
+                }
             }
         )
-        setCSVData(json);
     }
 
     async function getRows(file1, file2) {
         console.log("hi");
         switch (title) {
+            case "Objective":
+                await getCsvData(file1);
+                break;
             case "Subjective":
-                parsedFile = file2;
+                await getCsvData(file2);
                 break;
             case "Entry Level":
-                parsedFile = file1;
+                await getCsvData(file1);
                 break;
             case "Middle Level":
-                parsedFile = file2;
+                await getCsvData(file2);
                 break;
             case "Executive Level":
-                parsedFile = file1;
+                await getCsvData(file1);
                 break;
             case "Management Level":
-                parsedFile = file2;
+                await getCsvData(file2);
                 break;
             default:
-                parsedFile = file1;
                 break;
-        }
-        await handleParse();
+        };
+
+        /* Papa.parse(
+            parsedFile,
+            {
+                ...commonConfig,
+                header: true,
+                download: true,
+                complete: (result) => {
+                    console.log("why");
+                    setCSVData(result.data);
+                }
+            }
+        ); */
+        console.log(CSVData);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -305,6 +323,7 @@ export const CompanyData = () => {
             <div className="row">
                 <h3>Company Data</h3>
                 <DropdownButton id="companySpecificData" title={title}>
+                    <Dropdown.Item id="None" onClick={selectData}>None</Dropdown.Item>
                     <Dropdown.Item id="Objective" onClick={selectData}>Objective</Dropdown.Item>
                     <Dropdown.Item id="Subjective" onClick={selectData}>Subjective</Dropdown.Item>
                     <Dropdown.Item id="Entry Level" onClick={selectData}>Entry Level</Dropdown.Item>
