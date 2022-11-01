@@ -1,5 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DropdownContext } from "../Utils/DropdownContext";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from "react-bootstrap/DropdownButton";
+
 import { 
     overall_negative, overall_objective, overall_positive, overall_extremes_objective, overall_extremes_subjective,
     AETOS_negative, AETOS_objective, AETOS_positive, AETOS_extremes_objective, AETOS_extremes_subjective,
@@ -26,6 +29,8 @@ import {
  } from "../data/index";
 
 export const CompanyData = () => {
+    const [title, setTitle] = useState('Objective');
+
     const getFiles = (file1, file2) => {
         fetch(file1).then(response => {
             response.blob().then(blob => {
@@ -47,6 +52,15 @@ export const CompanyData = () => {
             })
         });
     }
+
+    const selectData = (event) => {
+        const id = event.target.id;
+        setTitle(id);
+    }
+
+    /* const getDataFromFile = (title) => {
+        switch 
+    } */
 
     const { display } = useContext(DropdownContext);
     var img1 = overall_positive;
@@ -235,21 +249,41 @@ export const CompanyData = () => {
 
     return (
         <>
-            <h5>Click on the button below to download CSV files for the company you have chosen</h5>
-            <button className="download" onClick={() => getFiles(file1, file2)}><b>Download Data</b></button>
-            <h5>Here are the wordclouds for the different sentiments for the company you have chosen</h5>
-            <div>
-                <h2>Subjective (Positive Sentiment)</h2>
-                <img src={img1} alt="" />
+            <table>
+                <div className="row">
+                    <h3>Company Data</h3>
+                    <DropdownButton id="companySpecificData" title={title}>
+                        <Dropdown.Item id="Objective" onClick={selectData}>Objective</Dropdown.Item>
+                        <Dropdown.Item id="Subjective" onClick={selectData}>Subjective</Dropdown.Item>
+                        <Dropdown.Item id="Entry Level" onClick={selectData}>Entry Level</Dropdown.Item>
+                        <Dropdown.Item id="Middle Level" onClick={selectData}>Middle Level</Dropdown.Item>
+                        <Dropdown.Item id="Executive Level" onClick={selectData}>Executive Level</Dropdown.Item>
+                        <Dropdown.Item id="Management Level" onClick={selectData}>Management Level</Dropdown.Item>
+                    </DropdownButton>
+                    <button className="download" onClick={() => getFiles(file1, file2)}><b>Download All Data</b></button>
+                </div>
+                {/* getDataFromFile(title) */}
+            </table>
+
+            <h3>Word Clouds</h3>
+            <div className="row">
+                <div className="col">
+                    <h4>Subjective (Positive Sentiment)</h4>
+                    <img className="wordCloud" src={img1} alt="" />
+                </div>
+
+                <div className="col">
+                    <h4>Subjective (Negative Sentiment)</h4>
+                    <img className="wordCloud" src={img3} alt="" />
+                </div>
+
+                <div className="col">
+                    <h4>Objective</h4>
+                    <img className="wordCloud" src={img2} alt="" />
+                </div>
             </div>
-            <div>
-                <h2>Subjective (Negative Sentiment)</h2>
-                <img src={img3} alt="" />
-            </div>
-            <div>
-                <h2>Objective</h2>
-                <img src={img2} alt="" />
-            </div>
+
+            
         </>
     );
 }

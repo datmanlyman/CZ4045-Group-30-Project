@@ -89,3 +89,20 @@ h1 {
     border: 2px solid #73AD21;
     justify-content: center;
 }
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.wordCloud {
+    height: 90%;
+    width: 90%;
+}
