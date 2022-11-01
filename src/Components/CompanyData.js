@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { DropdownContext } from "../Utils/DropdownContext";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableBody, styled, tableCellClasses } from "@mui/material";
 import Papa from "papaparse";
-
 import { 
     overall_negative, overall_objective, overall_positive, overall_extremes_objective, overall_extremes_subjective,
     AETOS_negative, AETOS_objective, AETOS_positive, AETOS_extremes_objective, AETOS_extremes_subjective,
@@ -44,24 +43,6 @@ export const CompanyData = () => {
     var columns;
     var parsedFile = file1;
     var commonConfig = { delimiter: "," };
-    const handleParse = () => { 
-        // Initialize a reader which allows user
-        // to read any file or blob.
-        const reader = new FileReader();
-         
-        // Event listener on reader when the file
-        // loads, we parse it and set the data.
-        reader.onload = async ({ target }) => {
-            const csv = Papa.parse(target.result, { header: true });
-            console.log(csv);
-            const parsedData = csv?.data;
-            const columns = Object.keys(parsedData[0]);
-            setCSVData(columns);
-        };
-        console.log(CSVData);
-    };
-
-    const table = handleParse();
 
     const getFiles = (file1, file2) => {
         fetch(file1).then(response => {
@@ -90,6 +71,18 @@ export const CompanyData = () => {
         setTitle(id);
         await getRows(file1, file2);
     }
+    
+    async function handleParse() {
+        const json = Papa.parse(
+            parsedFile,
+            {
+                ...commonConfig,
+                header: true,
+                download: true,
+            }
+        )
+        setCSVData(json);
+    }
 
     async function getRows(file1, file2) {
         console.log("hi");
@@ -113,7 +106,7 @@ export const CompanyData = () => {
                 parsedFile = file1;
                 break;
         }
-        await handleParse;
+        await handleParse();
     };
 
     const handleChangePage = (event, newPage) => {
@@ -309,21 +302,19 @@ export const CompanyData = () => {
 
     return (
         <>
-            <table>
-                <div className="row">
-                    <h3>Company Data</h3>
-                    <DropdownButton id="companySpecificData" title={title}>
-                        <Dropdown.Item id="Objective" onClick={selectData}>Objective</Dropdown.Item>
-                        <Dropdown.Item id="Subjective" onClick={selectData}>Subjective</Dropdown.Item>
-                        <Dropdown.Item id="Entry Level" onClick={selectData}>Entry Level</Dropdown.Item>
-                        <Dropdown.Item id="Middle Level" onClick={selectData}>Middle Level</Dropdown.Item>
-                        <Dropdown.Item id="Executive Level" onClick={selectData}>Executive Level</Dropdown.Item>
-                        <Dropdown.Item id="Management Level" onClick={selectData}>Management Level</Dropdown.Item>
-                    </DropdownButton>
-                    <button className="download" onClick={() => getFiles(file1, file2)}><b>Download All Data</b></button>
-                </div>
-                {/* getDataFromFile(title) */}
-            </table>
+            <div className="row">
+                <h3>Company Data</h3>
+                <DropdownButton id="companySpecificData" title={title}>
+                    <Dropdown.Item id="Objective" onClick={selectData}>Objective</Dropdown.Item>
+                    <Dropdown.Item id="Subjective" onClick={selectData}>Subjective</Dropdown.Item>
+                    <Dropdown.Item id="Entry Level" onClick={selectData}>Entry Level</Dropdown.Item>
+                    <Dropdown.Item id="Middle Level" onClick={selectData}>Middle Level</Dropdown.Item>
+                    <Dropdown.Item id="Executive Level" onClick={selectData}>Executive Level</Dropdown.Item>
+                    <Dropdown.Item id="Management Level" onClick={selectData}>Management Level</Dropdown.Item>
+                </DropdownButton>
+                <button className="download" onClick={() => getFiles(file1, file2)}><b>Download All Data</b></button>
+            </div>
+            {/* getDataFromFile(title) */}
 
             <h3>Reviews</h3>
             <table>
@@ -338,55 +329,6 @@ export const CompanyData = () => {
 
                 </tbody>
             </table>
-            { /*<Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                        {columns.map((column) => (
-                            <TableCell
-                                key={column.id}
-                                align={column.align}
-                                style={{ minWidth: column.minWidth }}
-                                >
-                                {column.label}
-                            </TableCell>
-                        ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {CSVData
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row) => {
-                            return (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                {columns.map((column) => {
-                                const value = row[column.id];
-                                return (
-                                    <TableCell key={column.id} align={column.align}>
-                                    {column.format && typeof value === 'number'
-                                        ? column.format(value)
-                                        : value}
-                                    </TableCell>
-                                );
-                                })}
-                            </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={CSVData.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-                    </Paper> */ }
-
             <h3>Word Clouds</h3>
             <div className="row">
                 <div className="col">

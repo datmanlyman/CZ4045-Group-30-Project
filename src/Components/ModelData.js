@@ -21,97 +21,82 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-function createPredictionData(
-  name,
-  calories,
-  fat,
-  carbs
-) {
-  return { name, calories, fat, carbs };
+function createAccuracyData(sentiment, precision, recall, f1) {
+    return { sentiment, precision, recall, f1 }
 }
 
-function createAccuracyData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein }
-}
 
-const rowsPrediction = [
-    createPredictionData('Frozen yoghurt', 159, 6.0, 24),
-    createPredictionData('Ice cream sandwich', 237, 9.0, 37),
-    createPredictionData('Eclair', 262, 16.0, 24),
-    createPredictionData('Cupcake', 305, 3.7, 67),
-    createPredictionData('Gingerbread', 356, 16.0, 49),
-];
 
 const rowsAccuracy = [
-    createAccuracyData('Frozen yoghurt', 159, 6.0, 24, 0),
-    createAccuracyData('Ice cream sandwich', 237, 9.0, 37, 0),
-    createAccuracyData('Eclair', 262, 16.0, 24, 0),
-    createAccuracyData('Cupcake', 305, 3.7, 67, 0),
-    createAccuracyData('Gingerbread', 356, 16.0, 49, 0),
+    [
+        createAccuracyData('Negative', "0.74", "0.53", "0.62"),
+        createAccuracyData('Neutral', "0.60", "0.88", "0.72"),
+        createAccuracyData('Positive', "0.77", "0.17", "0.27")
+    ],
+    [
+        createAccuracyData('Negative', "0.74", "0.55", "0.63"),
+        createAccuracyData('Neutral', "0.62", "0.87", "0.72"),
+        createAccuracyData('Positive', "0.68", "0.22", "0.33")
+    ],
+    [
+        createAccuracyData('Negative', "0.76", "0.51", "0.61"),
+        createAccuracyData('Neutral', "0.60", "0.91", "0.72"),
+        createAccuracyData('Positive', "0.33", "0.03", "0.06")
+    ],
+    [
+        createAccuracyData('Negative', "0.81", "0.70", "0.75"),
+        createAccuracyData('Neutral', "0.68", "0.87", "0.76"),
+        createAccuracyData('Positive', "0.84", "0.33", "0.48")
+    ]
 ];
 
-export function ModelPredictions() {
+const models = ["Logistic Regression", "XGBoost", "Random Forest", "BERT"];
+const accuracy = ["64%", "66%", "64%", "73%"];
+
+export function ModelAccuracy() {
     return (
         <>
-            <h3>Model Prediction</h3>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>Models</StyledTableCell>
-                            <StyledTableCell align="right">Positive</StyledTableCell>
-                            <StyledTableCell align="right">Negative</StyledTableCell>
-                            <StyledTableCell align="right">Objective</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {rowsPrediction.map((row) => (
-                        <StyledTableRow key={row.name}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.name}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                            <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                            <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                        </StyledTableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <h3 key="modelAccuracy">Model Accuracy</h3>
+            {   
+                rowsAccuracy.map((rowAccuracy, index) => {
+                    return (
+                        <>
+                            <h4 key={models[index] + accuracy[index]}>{models[index]} Accuracy: {accuracy[index]}</h4>
+                            <TableContainer key={index} component={Paper}>
+                                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <StyledTableCell>Sentiment</StyledTableCell>
+                                            <StyledTableCell align="right">Precision</StyledTableCell>
+                                            <StyledTableCell align="right">Recall</StyledTableCell>
+                                            <StyledTableCell align="right">F1-Score</StyledTableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                    {rowAccuracy.map((row) => (
+                                        <StyledTableRow key={row.sentiment + row.f1 + row.precision + row.precision}>
+                                            <StyledTableCell component="th" scope="row">
+                                                {row.sentiment}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">{row.precision}</StyledTableCell>
+                                            <StyledTableCell align="right">{row.recall}</StyledTableCell>
+                                            <StyledTableCell align="right">{row.f1}</StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </>
+                )})
+            }
         </>
     );
 }
 
-export const ModelAccuracy = () => {
+export function ModelPrecision() {
     return (
         <>
-            <h3>Model Accuracy</h3>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>Models</StyledTableCell>
-                            <StyledTableCell align="right">Accuracy</StyledTableCell>
-                            <StyledTableCell align="right">Precision</StyledTableCell>
-                            <StyledTableCell align="right">Recall</StyledTableCell>
-                            <StyledTableCell align="right">F1-Score</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {rowsAccuracy.map((row) => (
-                        <StyledTableRow key={row.name}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.name}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                            <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                            <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                            <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                        </StyledTableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <h3>Overall Accuracy</h3>
         </>
     );
 }

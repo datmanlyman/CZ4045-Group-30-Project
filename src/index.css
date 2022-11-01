@@ -106,3 +106,7 @@ h1 {
     height: 90%;
     width: 90%;
 }
+
+TableContainer {
+    padding-bottom: 3rem;
+}

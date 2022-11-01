@@ -21,7 +21,8 @@ export default function Navbar() {
             </Link>
             <ul>
                 <CustomLink to="/report">Report</CustomLink>
-                <CustomLink to="/data">Data</CustomLink>
+                <CustomLink to="/data">Company Data</CustomLink>
+                <CustomLink to="/model">Model Data</CustomLink>
             </ul>
         </nav>
     );
