@@ -5,7 +5,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import { Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableBody, styled, tableCellClasses } from "@mui/material";
 import Papa from "papaparse";
 import { DataGrid } from '@mui/x-data-grid';
-import CSVReader from "react-csv-reader";
+
 import { 
     overall_negative, overall_objective, overall_positive, overall_extremes_objective, overall_extremes_subjective,
     AETOS_negative, AETOS_objective, AETOS_positive, AETOS_extremes_objective, AETOS_extremes_subjective,
