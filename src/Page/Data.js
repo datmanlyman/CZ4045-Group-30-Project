@@ -1,10 +1,12 @@
-import { Dropdown } from '../Components/Dropdown';
+import { CompanyDropdown } from '../Components/CompanyDropdown';
 import { CompanyData } from '../Components/CompanyData';
+import { ModelAccuracy } from '../Components/ModelData';
 
 export const Data = () => {
     return (
         <>
-            <Dropdown/>
+            <CompanyDropdown/>
+            <ModelAccuracy/>
             <CompanyData/>
         </>
     )
