@@ -74,6 +74,7 @@ export const CompanyData = () => {
     const selectData = async (event) => {
         const id = event.target.id;
         setTitle(id);
+        console.log(title);
         await getRows(file1, file2);
     }
 
@@ -90,24 +91,11 @@ export const CompanyData = () => {
     }
 
     async function getRows(file1, file2) {
-        console.log("hi");
         switch (title) {
             case "Objective":
                 await getCsvData(file1);
                 break;
             case "Subjective":
-                await getCsvData(file2);
-                break;
-            case "Entry Level":
-                await getCsvData(file1);
-                break;
-            case "Middle Level":
-                await getCsvData(file2);
-                break;
-            case "Executive Level":
-                await getCsvData(file1);
-                break;
-            case "Management Level":
                 await getCsvData(file2);
                 break;
             default:
@@ -351,18 +339,14 @@ export const CompanyData = () => {
       
     return (
         <>
-            <div className="row">
-                <h3>Company Data</h3>
-                <DropdownButton id="companySpecificData" title={title}>
+            <div>
+                <h3 className="inline-block-child">Company Data</h3>
+                <DropdownButton className="inline-block-child" id="companySpecificData" title={title}>
                     <Dropdown.Item id="None" onClick={selectData}>None</Dropdown.Item>
                     <Dropdown.Item id="Objective" onClick={selectData}>Objective</Dropdown.Item>
                     <Dropdown.Item id="Subjective" onClick={selectData}>Subjective</Dropdown.Item>
-                    <Dropdown.Item id="Entry Level" onClick={selectData}>Entry Level</Dropdown.Item>
-                    <Dropdown.Item id="Middle Level" onClick={selectData}>Middle Level</Dropdown.Item>
-                    <Dropdown.Item id="Executive Level" onClick={selectData}>Executive Level</Dropdown.Item>
-                    <Dropdown.Item id="Management Level" onClick={selectData}>Management Level</Dropdown.Item>
                 </DropdownButton>
-                <button className="download" onClick={() => getFiles(file1, file2)}><b>Download All Data</b></button>
+                <button className="download inline-block-child" onClick={() => getFiles(file1, file2)}><b>Download All Data</b></button>
                
             </div>
             {/* getDataFromFile(title) */}
@@ -401,10 +385,11 @@ export const CompanyData = () => {
                     <DataGrid
                         rows={CSVData}
                         columns={columns}
+                        rowsPerPageOptions={[10]}
                         pageSize={10}
                         getRowId={(row) => row['']}
                     />
-                </div>
+            </div>
             
         </>
     );
