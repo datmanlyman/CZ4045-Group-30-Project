@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { DropdownContext } from "../Utils/DropdownContext";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from "react-bootstrap/DropdownButton";
-import { Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableBody, styled, tableCellClasses } from "@mui/material";
 import Papa from "papaparse";
 import { DataGrid } from '@mui/x-data-grid';
+import { CompanyDropdown } from "./CompanyDropdown";
 
 import { 
     overall_negative, overall_objective, overall_positive, overall_extremes_objective, overall_extremes_subjective,
@@ -33,20 +33,103 @@ import {
 
 export const CompanyData = () => {
     const [title, setTitle] = useState('None');
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [CSVData, setCSVData] = useState([]);
     const { display } = useContext(DropdownContext);
     var img1 = overall_positive;
     var img2 = overall_objective;
     var img3 = overall_negative;
+    const files = {
+        "Overall": {
+            "Objective": overall_extremes_objective,
+            "Subjective": overall_extremes_subjective
+        },
+        "AETOS": {
+            "Objective": AETOS_extremes_objective,
+            "Subjective": AETOS_extremes_subjective
+        },
+        "Charles & Keith": {
+            "Objective": CandK_extremes_objective,
+            "Subjective": CandK_extremes_subjective
+        },
+        "Cheil Worldwide": {
+            "Objective": CW_extremes_objective,
+            "Subjective": CW_extremes_subjective
+        },
+        "Circles.Life": {
+            "Objective": CL_extremes_objective,
+            "Subjective": CL_extremes_subjective
+        },
+        "Dyson": {
+            "Objective": Dyson_extremes_objective,
+            "Subjective": Dyson_extremes_subjective
+        },
+        "Integrated Health Information Systems": {
+            "Objective": IHIS_extremes_objective,
+            "Subjective": IHIS_extremes_subjective
+        },
+        "Keppel Offshore & Marine": {
+            "Objective": KOandM_extremes_objective,
+            "Subjective": KOandM_extremes_subjective
+        },
+        "Mapletree Investments": {
+            "Objective": MI_extremes_objective,
+            "Subjective": MI_extremes_subjective
+        },
+        "Mediacorp": {
+            "Objective": Mediacorp_extremes_objective,
+            "Subjective": Mediacorp_extremes_subjective
+        },
+        "My First Skool": {
+            "Objective": MFS_extremes_objective,
+            "Subjective": MFS_extremes_subjective
+        },
+        "Navitas": {
+            "Objective": Navitas_extremes_objective,
+            "Subjective": Navitas_extremes_subjective
+        },
+        "OKX": {
+            "Objective": OKX_extremes_objective,
+            "Subjective": OKX_extremes_subjective
+        },
+        "Panasonic Avionics Corporation": {
+            "Objective": PAC_extremes_objective,
+            "Subjective": PAC_extremes_subjective
+        },
+        "Recruit Express": {
+            "Objective": RE_extremes_objective,
+            "Subjective": RE_extremes_subjective
+        },
+        "Resort World Sentosa": {
+            "Objective": RWS_extremes_objective,
+            "Subjective": RWS_extremes_subjective
+        },
+        "SembCorp Marine": {
+            "Objective": SCM_extremes_objective,
+            "Subjective": SCM_extremes_subjective
+        },
+        "SMRT": {
+            "Objective": SMRT_extremes_objective,
+            "Subjective": SMRT_extremes_subjective
+        },
+        "ST Aerospace": {
+            "Objective": STA_extremes_objective,
+            "Subjective": STA_extremes_subjective
+        },
+        "ST Engineering": {
+            "Objective": STE_extremes_objective,
+            "Subjective": STE_extremes_subjective
+        },
+        "Surbana Jurong": {
+            "Objective": SJ_extremes_objective,
+            "Subjective": SJ_extremes_subjective
+        },
+        "Tribal Worldwide": {
+            "Objective": TW_extremes_objective,
+            "Subjective": TW_extremes_subjective
+        }
+    };
     var file1 = overall_extremes_objective;
     var file2 = overall_extremes_subjective;
-    var parsedFile = file1;
-    var commonConfig = { delimiter: "," };
-    var parsedData;
-
-    const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const getFiles = (file1, file2) => {
         fetch(file1).then(response => {
@@ -54,13 +137,12 @@ export const CompanyData = () => {
                 const fileURL = window.URL.createObjectURL(blob);
                 let alink = document.createElement('a');
                 alink.href = fileURL;
-                // alink.download = file1, file2;
                 alink.download = file1;
                 alink.click();
             })
         });
 
-        /* fetch(file2).then(response => {
+        fetch(file2).then(response => {
             response.blob().then(blob => {
                 const fileURL = window.URL.createObjectURL(blob);
                 let alink = document.createElement('a');
@@ -68,18 +150,17 @@ export const CompanyData = () => {
                 alink.download = file2;
                 alink.click();
             })
-        }); */
+        });
     }
 
-    const selectData = async (event) => {
+    const selectData = (event) => {
         const id = event.target.id;
+        getRows(id);
         setTitle(id);
-        console.log(title);
-        await getRows(file1, file2);
     }
 
     const getCsvData = async (file) => {
-        await Papa.parse(
+        Papa.parse(
             file,
             {
                 download: true,
@@ -90,45 +171,13 @@ export const CompanyData = () => {
         )
     }
 
-    async function getRows(file1, file2) {
-        switch (title) {
-            case "Objective":
-                await getCsvData(file1);
-                break;
-            case "Subjective":
-                await getCsvData(file2);
-                break;
-            default:
-                break;
-        };
-
-        /* Papa.parse(
-            parsedFile,
-            {
-                ...commonConfig,
-                header: true,
-                download: true,
-                complete: (result) => {
-                    console.log("why");
-                    setCSVData(result.data);
-                }
-            }
-        ); */
-        // console.log(CSVData);
+    function getRows(id) {
+        if (id === "None") {
+            setCSVData('');
+        }
+        const file = files[display][id];
+        getCsvData(file);
     };
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
-    /* const getDataFromFile = (title) => {
-        switch 
-    } */
 
     switch (display) {
         case "AETOS":
@@ -308,11 +357,6 @@ export const CompanyData = () => {
             break;
     }
 
-    // data table
-    useEffect(()=>{
-        getCsvData(file1)
-    }, [])
-
     function convertToJSON(array) {
         var objArray = [];
         for (var i = 1; i < array.length; i++) {
@@ -339,58 +383,46 @@ export const CompanyData = () => {
       
     return (
         <>
-            <div>
-                <h3 className="inline-block-child">Company Data</h3>
+            <CompanyDropdown />
+            <h3 className="header">{display} Data</h3>
+            <div className="component">
+                <h3>Word Clouds</h3>
+                <div className="row">
+                    <div className="col">
+                        <h4>Positive Sentiment</h4>
+                        <img className="wordCloud" src={img1} alt="" />
+                    </div>
+
+                    <div className="col">
+                        <h4>Negative Sentiment</h4>
+                        <img className="wordCloud" src={img3} alt="" />
+                    </div>
+
+                    <div className="col">
+                        <h4>Objective</h4>
+                        <img className="wordCloud" src={img2} alt="" />
+                    </div>
+                </div>
+            </div>
+
+            <div className="component">
+                <h3 className="inline-block-child">Extreme Reviews</h3>
                 <DropdownButton className="inline-block-child" id="companySpecificData" title={title}>
                     <Dropdown.Item id="None" onClick={selectData}>None</Dropdown.Item>
                     <Dropdown.Item id="Objective" onClick={selectData}>Objective</Dropdown.Item>
                     <Dropdown.Item id="Subjective" onClick={selectData}>Subjective</Dropdown.Item>
                 </DropdownButton>
-                <button className="download inline-block-child" onClick={() => getFiles(file1, file2)}><b>Download All Data</b></button>
-               
-            </div>
-            {/* getDataFromFile(title) */}
-
-            <h3>Reviews</h3>
-            <table>
-                <thead>
-                    {/*columns.map((column, id) => {
-                        return (
-                            <th key={id}>{column}</th>
-                        );
-                    })*/}
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-            <h3>Word Clouds</h3>
-            <div className="row">
-                <div className="col">
-                    <h4>Subjective (Positive Sentiment)</h4>
-                    <img className="wordCloud" src={img1} alt="" />
-                </div>
-
-                <div className="col">
-                    <h4>Subjective (Negative Sentiment)</h4>
-                    <img className="wordCloud" src={img3} alt="" />
-                </div>
-
-                <div className="col">
-                    <h4>Objective</h4>
-                    <img className="wordCloud" src={img2} alt="" />
+                <button className="download" onClick={() => getFiles(file1, file2)}><b>Download Data</b></button>
+                <div style={{ height: 680, width: '100%', marginTop:'20px', marginBottom:'20px', padding:'15px', background:'white' }}>
+                        <DataGrid
+                            rows={CSVData}
+                            columns={columns}
+                            rowsPerPageOptions={[10]}
+                            pageSize={10}
+                            getRowId={(row) => row['']}
+                        />
                 </div>
             </div>
-            <div style={{ height: 680, width: '100%', marginTop:'20px', marginBottom:'20px', padding:'15px', background:'white' }}>
-                    <DataGrid
-                        rows={CSVData}
-                        columns={columns}
-                        rowsPerPageOptions={[10]}
-                        pageSize={10}
-                        getRowId={(row) => row['']}
-                    />
-            </div>
-            
         </>
     );
 }

@@ -50,12 +50,9 @@ const rowsAccuracy = [
     ]
 ];
 
-const models = ["Logistic Regression", "XGBoost", "Random Forest", "BERT"];
-const accuracy = ["64%", "66%", "64%", "73%"];
-
 export function ModelAccuracy() {
     return (
-        <>
+        <div className='component'>
             <h3 key="modelAccuracy">BERT Accuracy: 73%</h3>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -81,7 +78,7 @@ export function ModelAccuracy() {
                     </TableBody>
                 </Table>
             </TableContainer>
-        </>
+        </div>
     );
 }
 
