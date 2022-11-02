@@ -130,6 +130,8 @@ import TW_positive from "./Tribal Worldwide/wordclouds/Tribal Worldwide_positive
 import TW_extremes_objective from "./Tribal Worldwide/extremes/objective.csv";
 import TW_extremes_subjective from "./Tribal Worldwide/extremes/subjective.csv";
 
+import absa from './absa.csv';
+
 export { 
     overall_negative, overall_objective, overall_positive, overall_extremes_objective, overall_extremes_subjective,
     AETOS_negative, AETOS_objective, AETOS_positive, AETOS_extremes_objective, AETOS_extremes_subjective,
@@ -152,5 +154,6 @@ export {
     STA_negative, STA_objective, STA_positive, STA_extremes_objective, STA_extremes_subjective,
     STE_negative, STE_objective, STE_positive, STE_extremes_objective, STE_extremes_subjective,
     SJ_negative, SJ_objective, SJ_positive, SJ_extremes_objective, SJ_extremes_subjective,
-    TW_negative, TW_objective, TW_positive, TW_extremes_objective, TW_extremes_subjective
+    TW_negative, TW_objective, TW_positive, TW_extremes_objective, TW_extremes_subjective,
+    absa
 };

@@ -56,39 +56,31 @@ const accuracy = ["64%", "66%", "64%", "73%"];
 export function ModelAccuracy() {
     return (
         <>
-            <h3 key="modelAccuracy">Model Accuracy</h3>
-            {   
-                rowsAccuracy.map((rowAccuracy, index) => {
-                    return (
-                        <>
-                            <h4 key={models[index] + accuracy[index]}>{models[index]} Accuracy: {accuracy[index]}</h4>
-                            <TableContainer key={index} component={Paper}>
-                                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell>Sentiment</StyledTableCell>
-                                            <StyledTableCell align="right">Precision</StyledTableCell>
-                                            <StyledTableCell align="right">Recall</StyledTableCell>
-                                            <StyledTableCell align="right">F1-Score</StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                    {rowAccuracy.map((row) => (
-                                        <StyledTableRow key={row.sentiment + row.f1 + row.precision + row.precision}>
-                                            <StyledTableCell component="th" scope="row">
-                                                {row.sentiment}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="right">{row.precision}</StyledTableCell>
-                                            <StyledTableCell align="right">{row.recall}</StyledTableCell>
-                                            <StyledTableCell align="right">{row.f1}</StyledTableCell>
-                                        </StyledTableRow>
-                                    ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </>
-                )})
-            }
+            <h3 key="modelAccuracy">BERT Accuracy: 73%</h3>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell>Sentiment</StyledTableCell>
+                            <StyledTableCell align="right">Precision</StyledTableCell>
+                            <StyledTableCell align="right">Recall</StyledTableCell>
+                            <StyledTableCell align="right">F1-Score</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {rowsAccuracy[3].map((row) => (
+                        <StyledTableRow key={row.sentiment + row.f1 + row.precision + row.precision}>
+                            <StyledTableCell component="th" scope="row">
+                                {row.sentiment}
+                            </StyledTableCell>
+                            <StyledTableCell align="right">{row.precision}</StyledTableCell>
+                            <StyledTableCell align="right">{row.recall}</StyledTableCell>
+                            <StyledTableCell align="right">{row.f1}</StyledTableCell>
+                        </StyledTableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </>
     );
 }
