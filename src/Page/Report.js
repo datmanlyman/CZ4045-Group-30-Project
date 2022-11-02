@@ -1,9 +1,12 @@
 import "./Report.css";
 import { Button } from "react-bootstrap";
+import ReportConstructor from "../Components/ReportConstructor";
 
 export const Report = () => {
     return (
-        <div className="report">
+        <>
+        <ReportConstructor />
+        { /*<div className="report">
             <div className="introduction">
                 <h1>Introduction</h1>
                 <p>
@@ -74,6 +77,7 @@ export const Report = () => {
                     like Aldus PageMaker including versions of Lorem Ipsum.
                 </p>
             </div>
-        </div>
+    </div> */ }
+    </>
     );
 };
