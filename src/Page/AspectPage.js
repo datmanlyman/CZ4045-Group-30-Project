@@ -1,5 +1,5 @@
 import { makeStyles } from "tss-react/mui";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import AspectCard from "../Components/AspectCard";
 
@@ -21,7 +21,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Divider, Slider, Checkbox } from "@mui/material";
 
 import { companies } from "../Components/Companies";
-import { absa } from "../data/index";
+import AspectData from "../Components/AspectData";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -44,7 +44,7 @@ export default function AspectPage() {
   const { classes } = useStyles();
 
   // replace this with full review data
-  const reviews = [
+  const reviews = [ //AspectData;
     {
       company: "AETOS",
       post_title: "title here",

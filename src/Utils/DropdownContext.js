@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 export const DropdownContext = React.createContext();
 
 export const DropdownProvider = ({children}) => {
