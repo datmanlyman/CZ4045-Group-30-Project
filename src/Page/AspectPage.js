@@ -18,10 +18,16 @@ import FormLabel from "@mui/material/FormLabel";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
+import Fab from "@mui/material/Fab";
+import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
+
 import { Divider, Slider, Checkbox } from "@mui/material";
 
 import { companies } from "../Components/Companies";
-import AspectData from "../Components/AspectData";
+import dataJSON from "../data/data.json";
+
+import WordClouds from "../Components/WordClouds";
+import DataTable from "../Components/DataTable";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -42,35 +48,8 @@ const useStyles = makeStyles()((theme) => {
 
 export default function AspectPage() {
   const { classes } = useStyles();
-
-  // replace this with full review data
-  const reviews = [ //AspectData;
-    {
-      company: "AETOS",
-      post_title: "title here",
-      date: "12-11-2012",
-      rating: 2,
-      text: "hello text here",
-      position: "position here",
-      location: "location here",
-      tab: "interviews",
-      absa: [
-        { aspect: "work", sentiment: "positive" },
-        { aspect: "compensation", sentiment: "negative" },
-      ],
-    },
-    {
-      company: "Dyson",
-      post_title: "title here 2",
-      date: "12-11-2012",
-      rating: 2.5,
-      text: "hello text here",
-      position: "",
-      location: "",
-      tab: "reviews",
-      absa: [{ aspect: "work", sentiment: "positive" }],
-    },
-  ];
+  let reviews = dataJSON;
+  let reviewIndexIncrement = 5;
 
   const initialSentiments = [
     {
@@ -159,20 +138,67 @@ export default function AspectPage() {
   ];
 
   const [accordionExpanded, setAccordionExpanded] = useState("aspectFilters");
-  const [company, setCompany] = useState(companies[0].name);
+  const [company, setCompany] = useState("all");
   const [aspectSentiments, setAspectSentiments] = useState(initialSentiments);
   const [reviewSources, setReviewSources] = useState({
     reviews: true,
     interviews: true,
     benefits: true,
   });
-  const [ratingFilter, setRatingFilter] = React.useState([1, 5]);
+  const [subjectivityFilter, setSubjectivityFilter] = useState({
+    subjective: true,
+    objective: true,
+  });
+  const [sentimentFilter, setSentimentFilter] = useState({
+    negative: true,
+    neutral: true,
+    positive: true,
+  });
+  const [ratingFilter, setRatingFilter] = useState([1, 5]);
+  const [currentReviews, setCurrentReviews] = useState([]);
+  const [dynamicLoading, setDynamicLoading] = useState({
+    lastIndex: 0,
+    isComplete: false,
+  });
+
+  useEffect(() => {
+    updateCurrentReviews();
+  }, [
+    company,
+    aspectSentiments,
+    reviewSources,
+    sentimentFilter,
+    ratingFilter,
+    subjectivityFilter,
+  ]);
 
   // can also consider filter by sentiment/date range
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setAccordionExpanded(isExpanded ? panel : false);
   };
+
+  function updateCurrentReviews() {
+    let tmp = reviews.filter((review) => checkPassFilters(review));
+    setCurrentReviews(tmp);
+    if (tmp.length > reviewIndexIncrement) {
+      setDynamicLoading({ lastIndex: reviewIndexIncrement, isComplete: false });
+    } else {
+      setDynamicLoading({ lastIndex: tmp.length - 1, isComplete: true });
+    }
+  }
+
+  function updateLastIndex() {
+    let newIndex = dynamicLoading.lastIndex + reviewIndexIncrement;
+    if (newIndex > currentReviews.length) {
+      setDynamicLoading({
+        lastIndex: currentReviews.length - 1,
+        isComplete: true,
+      });
+    } else {
+      setDynamicLoading({ ...dynamicLoading, lastIndex: newIndex });
+    }
+  }
 
   function setAspectFilters(nameSentiments) {
     setAspectSentiments((cur) =>
@@ -219,10 +245,16 @@ export default function AspectPage() {
   // absa: [{ aspect: "work", sentiment: "positive" }]
   function checkPassFilters(review) {
     if (
-      review.company !== company ||
+      (company !== "all" && review.company !== company) ||
       (!reviewSources.reviews && review.tab === "reviews") ||
       (!reviewSources.interviews && review.tab === "interviews") ||
       (!reviewSources.benefits && review.tab === "benefits") ||
+      (!sentimentFilter.negative && review.sentiment === "negative") ||
+      (!sentimentFilter.neutral && review.sentiment === "neutral") ||
+      (!sentimentFilter.positive && review.sentiment === "positive") ||
+      (!subjectivityFilter.objective && review.subjectivity === "objective") ||
+      (!subjectivityFilter.subjective &&
+        review.subjectivity === "subjective") ||
       review.rating < ratingFilter[0] ||
       review.rating > ratingFilter[1]
     ) {
@@ -253,10 +285,36 @@ export default function AspectPage() {
     });
   };
 
+  const handleSentimentFilterChange = (event) => {
+    setSentimentFilter({
+      ...sentimentFilter,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
+  const handleSubjectivityFilterChange = (event) => {
+    setSubjectivityFilter({
+      ...subjectivityFilter,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
+          <Typography
+            variant="h5"
+            align="center"
+            gutterBottom
+            style={{
+              backgroundColor: "black",
+              borderRadius: "5px",
+              padding: "10px 0",
+            }}
+          >
+            Filters
+          </Typography>
           <Accordion
             expanded={accordionExpanded === "generalFilters"}
             onChange={handleAccordionChange("generalFilters")}
@@ -281,6 +339,9 @@ export default function AspectPage() {
                   }}
                   fullWidth
                 >
+                  <MenuItem key="all" value="all">
+                    All Companies
+                  </MenuItem>
                   {companies &&
                     companies.map((company) => (
                       <MenuItem key={company.name} value={company.name}>
@@ -331,6 +392,82 @@ export default function AspectPage() {
                       />
                     }
                     label="Benefits"
+                  />
+                </FormGroup>
+              </FormControl>
+              <Divider color="primary" style={{ margin: "20px 0" }} />
+              <FormControl
+                sx={{ m: 3 }}
+                component="fieldset"
+                variant="standard"
+                align="left"
+                fullWidth
+                style={{ margin: 0 }}
+              >
+                <FormLabel component="legend">Subjectivity Detection</FormLabel>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={subjectivityFilter.subjective}
+                        onChange={handleSubjectivityFilterChange}
+                        name="subjective"
+                      />
+                    }
+                    label="Subjective"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={subjectivityFilter.objective}
+                        onChange={handleSubjectivityFilterChange}
+                        name="objective"
+                      />
+                    }
+                    label="Objective"
+                  />
+                </FormGroup>
+              </FormControl>
+              <Divider color="primary" style={{ margin: "20px 0" }} />
+              <FormControl
+                sx={{ m: 3 }}
+                component="fieldset"
+                variant="standard"
+                align="left"
+                fullWidth
+                style={{ margin: 0 }}
+              >
+                <FormLabel component="legend">Sentiment Analysis</FormLabel>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={sentimentFilter.negative}
+                        onChange={handleSentimentFilterChange}
+                        name="negative"
+                      />
+                    }
+                    label="Negative"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={sentimentFilter.neutral}
+                        onChange={handleSentimentFilterChange}
+                        name="neutral"
+                      />
+                    }
+                    label="Neutral"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={sentimentFilter.positive}
+                        onChange={handleSentimentFilterChange}
+                        name="positive"
+                      />
+                    }
+                    label="Positive"
                   />
                 </FormGroup>
               </FormControl>
@@ -386,6 +523,7 @@ export default function AspectPage() {
                         key={aspectSentiment.name}
                         aspectSentiment={aspectSentiment}
                         parentCallback={setAspectFilters}
+                        // counts={2}
                         counts={getCounts(aspectSentiment.name)}
                       />
                     </div>
@@ -394,19 +532,66 @@ export default function AspectPage() {
             </AccordionDetails>
           </Accordion>
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={5}>
+          {/* <DataTable company={company} reviews={currentReviews} /> */}
+          <Typography
+            variant="h5"
+            align="center"
+            gutterBottom
+            style={{
+              backgroundColor: "black",
+              borderRadius: "5px",
+              padding: "10px 0",
+            }}
+          >
+            Reviews
+          </Typography>
           <div>
-            {reviews &&
-              reviews.map((review) =>
-                checkPassFilters(review) ? (
-                  <AspectCard key={review.post_title} review={review} />
-                ) : (
-                  ""
-                )
-              )}
+            {currentReviews &&
+              currentReviews
+                .slice(0, dynamicLoading.lastIndex)
+                .map((review) => (
+                  <AspectCard
+                    key={`${review.company}-${review.post_title}-${review.location}-${review.text}`}
+                    review={review}
+                  />
+                ))}
+
+            {dynamicLoading.isComplete ? (
+              ""
+            ) : (
+              <Button variant="contained" fullWidth onClick={updateLastIndex}>
+                Load More
+              </Button>
+            )}
           </div>
         </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography
+            variant="h5"
+            align="center"
+            gutterBottom
+            style={{
+              backgroundColor: "black",
+              borderRadius: "5px",
+              padding: "10px 0",
+            }}
+          >
+            Company Information
+          </Typography>
+          <WordClouds company={company} />
+        </Grid>
       </Grid>
+      <Fab
+        color="primary"
+        aria-label="scroll-to-top"
+        onClick={() => {
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        }}
+        style={{ position: "fixed", right: "2rem", bottom: "2rem" }}
+      >
+        <KeyboardArrowUpRoundedIcon />
+      </Fab>
     </div>
   );
 }

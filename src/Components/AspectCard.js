@@ -3,6 +3,7 @@ import { makeStyles } from "tss-react/mui";
 import { Card, CardContent, Typography, Chip } from "@mui/material";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
+import Grid from "@mui/material/Grid";
 import Rating from "@mui/material/Rating";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
 
@@ -12,7 +13,7 @@ const useStyles = makeStyles()((theme) => {
       margin: "0 0 20px 0",
     },
     header: {
-      paddingBottom: "0",
+      // paddingBottom: "0",
     },
     headerAction: {
       alignSelf: "center",
@@ -38,6 +39,9 @@ export default function AspectCard(props) {
     position,
     location,
     tab,
+    subjectivity,
+    sentiment,
+    confidence,
     absa,
   } = props.review;
 
@@ -53,7 +57,9 @@ export default function AspectCard(props) {
     }
   }
   function getDate(unparsedDate) {
-    let date = new Date(unparsedDate);
+    // default treats as mm/dd/yy, our data is dd/mm/yy
+    const tmp = unparsedDate.split("/");
+    let date = new Date(`${tmp[1]}/${tmp[0]}/${tmp[2]}`);
     const options = {
       year: "numeric",
       month: "long",
@@ -76,7 +82,7 @@ export default function AspectCard(props) {
         return "Compensation";
       case "culture":
         return "Culture";
-      case "faciltiies":
+      case "facilities":
         return "Facilities";
       case "worklifebalance":
         return "Work Life Balance";
@@ -91,6 +97,17 @@ export default function AspectCard(props) {
       default:
         return "Undefined";
     }
+  }
+
+  function getSubjColour(subjectivity, sentiment) {
+    if (subjectivity === "subjective") {
+      if (sentiment === "negative") {
+        return "#ff9999";
+      } else if (sentiment === "positive") {
+        return "#adebad";
+      }
+    }
+    return "#d9d9d9";
   }
 
   return (
@@ -124,13 +141,46 @@ export default function AspectCard(props) {
         classes={{ root: classes.header, action: classes.headerAction }}
       ></CardHeader>
       <CardContent>
-        <Rating
-          name="review-rating"
-          value={rating}
-          readOnly
-          precision={0.5}
-          size="small"
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={10}>
+            <Rating
+              name="review-rating"
+              value={Number(rating)}
+              readOnly
+              precision={0.5}
+              size="small"
+            />
+          </Grid>
+          <Grid
+            // container
+            item
+            xs={2}
+            style={{
+              backgroundColor: getSubjColour(subjectivity, sentiment),
+              padding: 0,
+              textAlign: "center",
+              borderRadius: "5px",
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              align="center"
+              style={{ fontWeight: "bold" }}
+            >
+              {subjectivity === "subjective"
+                ? sentiment.substring(0, 3).toUpperCase()
+                : subjectivity.substring(0, 3).toUpperCase()}
+            </Typography>
+            <Typography
+              variant="button"
+              align="center"
+              style={{ fontWeight: "bold" }}
+            >
+              {confidence.substring(0, 4)}
+            </Typography>
+          </Grid>
+        </Grid>
+
         <Typography variant="h5" component="div" gutterBottom>
           {post_title}
         </Typography>

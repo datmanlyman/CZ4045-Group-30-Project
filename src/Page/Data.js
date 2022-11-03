@@ -1,11 +1,12 @@
-import { CompanyData } from '../Components/CompanyData';
-import { ModelAccuracy } from '../Components/ModelData';
+import DataTable from "../Components/DataTable";
+import { ModelAccuracy } from "../Components/ModelData";
+import dataJSON from "../data/data.json";
 
 export const Data = () => {
-    return (
-        <>
-            <ModelAccuracy/>
-            <CompanyData/>
-        </>
-    )
-}
+  return (
+    <>
+      <ModelAccuracy />
+      <DataTable company="all" reviews={dataJSON} />
+    </>
+  );
+};
