@@ -28,6 +28,7 @@ import dataJSON from "../data/data.json";
 
 import WordClouds from "../Components/WordClouds";
 import DataTable from "../Components/DataTable";
+import Piechart from "../Components/Piechart";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -214,17 +215,41 @@ export default function AspectPage() {
   // check number of reviews for each aspect sentiment, given the current filters
   function getCounts(aspectName) {
     let count = [0, 0, 0];
-    for (var i = 0; i < reviews.length; i++) {
-      let curReview = reviews[i];
+    for (var i = 0; i < currentReviews.length; i++) {
+      let curReview = currentReviews[i];
       let matchingAspect = curReview.absa.filter(
         (aspectObj) => aspectObj.aspect === aspectName
       );
 
-      if (matchingAspect.length === 0 || !checkPassFilters(curReview)) {
+      if (matchingAspect.length === 0) {
         continue;
       }
 
       switch (matchingAspect[0].sentiment) {
+        case "negative":
+          count[0] += 1;
+          break;
+        case "neutral":
+          count[1] += 1;
+          break;
+        case "positive":
+          count[2] += 1;
+          break;
+        default:
+          break;
+      }
+    }
+    return count;
+  }
+
+  function getSentimentCounts() {
+    let count = [0, 0, 0];
+    for (var i = 0; i < currentReviews.length; i++) {
+      let review = currentReviews[i];
+      // if (review.subjectivity === "objective") {
+      //   continue;
+      // }
+      switch (review.sentiment) {
         case "negative":
           count[0] += 1;
           break;
@@ -577,8 +602,9 @@ export default function AspectPage() {
               padding: "10px 0",
             }}
           >
-            Company Information
+            Search Overview
           </Typography>
+          <Piechart counts={getSentimentCounts()} />
           <WordClouds company={company} />
         </Grid>
       </Grid>
