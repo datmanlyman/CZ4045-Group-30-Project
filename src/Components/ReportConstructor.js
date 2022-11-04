@@ -31,13 +31,12 @@ export default function CustomizedTimeline() {
             Introduction
           </Typography>
           <Typography>
-            <p>Glassdoor is an all-in-one portal for jobs around the world to offer insights to the employees experience. However, there comes multiple throttling factors when it comes to using Glassdoor:</p>
+            <p>Glassdoor is an all-in-one portal for jobs around the world to offer insights to the employees experience. However, there comes multiple throttling factors when it comes to using Glassdoor:
             <ul>
                 <li>Different priorities when reviewing the workplace </li>
                 <li>Different standards for each rating</li>
                 <li>Different cultures</li>
             </ul>
-            <p>
                 Thus, we created a Sentimental Analysis (SA) to overcome these possible issues.
             </p>
           </Typography>
@@ -66,8 +65,6 @@ export default function CustomizedTimeline() {
                 and a public API is not provided to access their review
                 data, we instead used Python, BeautifulSoup and Selenium to
                 crawl and parse data from their webpages.
-            </p>
-            <p>
                 For each company, we decided to scrape reviews from three
                 subpages:
             </p>
