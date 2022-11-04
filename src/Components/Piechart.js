@@ -18,7 +18,7 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 
 export default function Piechart(props) {
   const { counts } = props;
-  const [positive, neutral, negative] = counts;
+  const [ negative, neutral, positive] = counts;
 
   let total = positive + neutral + negative;
 
