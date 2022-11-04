@@ -1,4 +1,0 @@
-Average Rating: 2.857142857142857
-Objective Count: 15
-Positive Sentiment Count: 2
-Negative Sentiment Count: 1
