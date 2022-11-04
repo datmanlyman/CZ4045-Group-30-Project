@@ -92,19 +92,27 @@ export default function CustomizedTimeline() {
           </Typography>
           <Typography>
             <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+              Our classification accuracy when we started was:
+              <ul>
+                <li>Vader: 40% Accuracy</li>
+                <li>TextBlob: 49% Accuracy</li>
+              </ul>
+              However, we found the accuracy low, so to improve the accuracy we tried:
+              <ul>
+                <li>Logistic Regression: 67% Accuracy</li>
+                <li>XGBoost: 69% Accuracy</li>
+                <li>Random Forest: 66% Accuracy</li>
+              </ul>
+              We then tried a Stacked Ensemble and BERT model:
+              <ul>
+                <li>Stacked Ensemble: 70%</li>
+                <li>BERT Model: 72%</li>
+              </ul>
+              Considering that review sentiment labels can be very subjective, as evidenced by our manually labelled data already only having an 81% inter-annotator agreement, 
+              an accuracy of 72% is already a decently high score. We thus used the trained BERT model to label the rest of the unlabelled data.
             </p>
           </Typography>
-          <ModelAccuracy />
+          { /*<ModelAccuracy /> */ }
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
@@ -119,16 +127,9 @@ export default function CustomizedTimeline() {
           </Typography>
           <Typography>
             <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+              After preprocessing, we identified 12 equivalence classes in our corpus by grouping related words together.
+              We thus tried Aspect Based Sentimental Analysis to identify each reviews aspect and their sentiment.
+              It can be shown in action through the filters in the "Report" page.
             </p>
           </Typography>
         </TimelineContent>
