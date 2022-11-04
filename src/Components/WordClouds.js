@@ -220,7 +220,7 @@ export default function WordClouds(props) {
       </Grid> */}
 
       <Grid item xs={4}>
-        <Typography variant="body1">Negative Sentiment</Typography>
+        <Typography variant="h5">Negative Sentiment</Typography>
         <img
           className="wordCloud"
           src={img3}
@@ -229,7 +229,7 @@ export default function WordClouds(props) {
         />
       </Grid>
       <Grid item xs={4}>
-        <Typography variant="body1">Neutral Sentiment</Typography>
+        <Typography variant="h5">Neutral Sentiment</Typography>
         <img
           className="wordCloud"
           src={img2}
@@ -238,7 +238,7 @@ export default function WordClouds(props) {
         />
       </Grid>
       <Grid item xs={4}>
-        <Typography variant="body1">Positive Sentiment</Typography>
+        <Typography variant="h5">Positive Sentiment</Typography>
         <img
           className="wordCloud"
           src={img1}

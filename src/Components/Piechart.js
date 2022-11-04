@@ -9,7 +9,7 @@ export default function Piechart(props) {
 
   return (
     <div>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Sentiment Distribution
       </Typography>
       <div style={{ margin: "15px auto", width: "80%" }}>

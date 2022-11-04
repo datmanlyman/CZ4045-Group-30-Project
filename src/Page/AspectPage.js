@@ -29,6 +29,7 @@ import dataJSON from "../data/data.json";
 import WordClouds from "../Components/WordClouds";
 import DataTable from "../Components/DataTable";
 import Piechart from "../Components/Piechart";
+import BarChart from "../Components/BarChart";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -324,6 +325,102 @@ export default function AspectPage() {
     });
   };
 
+  const averageRatings = {};
+  
+  const setBarChartData = (company) => {
+    const companyData = {};
+    var countR = 0;
+    var countI = 0;
+    var countB = 0;
+    var reviewCount = 0;
+    var interview = 0;
+    var benefit = 0;
+
+    reviews.map((review) => {
+      if (review.company === company) {
+        if (review.tab === "interviews") {
+          countI += 1;
+          if (review.sentiment === "positive") {
+            interview += 1;
+          } else if (review.sentiment === "negative") {
+            interview -= 1;
+          }
+        } else if (review.tab === "benefits") {
+          countB += 1;
+          if (review.sentiment === "positive") {
+            benefit += 1;
+          } else if (review.sentiment === "negative") {
+            benefit -= 1;
+          }
+        } else if (review.tab === "reviews") {
+          countR += 1;
+          if (review.sentiment === "positive") {
+            reviewCount += 1;
+          } else if (review.sentiment === "negative") {
+            reviewCount -= 1;
+          }
+        }
+      }
+    });
+    companyData["companyName"] = company;
+    companyData["averageInterview"] = parseFloat(interview) / parseFloat(countI);
+    companyData["averageBenefit"] = parseFloat(benefit) / parseFloat(countB);
+    companyData["averageReview"] = parseFloat(reviewCount) / parseFloat(countR);
+    averageRatings[company] = companyData;
+  };
+
+  const setAllBarChartData = () => {
+    if (!("all" in averageRatings)) {
+      const allData = {};
+      var countR = 0;
+      var countI = 0;
+      var countB = 0;
+      var reviewCount = 0;
+      var interview = 0;
+      var benefit = 0;
+
+      reviews.map((review) => {
+        if (review.tab === "interviews") {
+          countI += 1;
+          if (review.sentiment === "positive") {
+            interview += 1;
+          } else if (review.sentiment === "negative") {
+            interview -= 1;
+          }
+        } else if (review.tab === "benefits") {
+          countB += 1;
+          if (review.sentiment === "positive") {
+            benefit += 1;
+          } else if (review.sentiment === "negative") {
+            benefit -= 1;
+          }
+        } else if (review.tab === "reviews") {
+          countR += 1;
+          if (review.sentiment === "positive") {
+            reviewCount += 1;
+          } else if (review.sentiment === "negative") {
+            reviewCount -= 1;
+          }
+        }
+      });
+
+      allData["companyName"] = "all";
+      allData["averageInterview"] = (countI) ? parseFloat(interview) / parseFloat(countI) : 0;
+      allData["averageBenefit"] = (countB) ? parseFloat(benefit) / parseFloat(countB) : 0;
+      allData["averageReview"] = (countR) ? parseFloat(reviewCount) / parseFloat(countR) : 0;
+      averageRatings["all"] = allData;
+    }
+  };
+  const getBarChartData = (company) => {
+    if (company === "all") {
+      setAllBarChartData();
+    }
+    if (!(company in averageRatings)) {
+      setBarChartData(company);
+    }
+    return averageRatings[company];
+  };
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
@@ -606,6 +703,7 @@ export default function AspectPage() {
           </Typography>
           <Piechart counts={getSentimentCounts()} />
           <WordClouds company={company} />
+          <BarChart data={getBarChartData(company)} />
         </Grid>
       </Grid>
       <Fab
