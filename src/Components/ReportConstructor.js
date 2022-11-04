@@ -108,8 +108,7 @@ export default function CustomizedTimeline() {
                 <li>Stacked Ensemble: 70%</li>
                 <li>BERT Model: 72%</li>
               </ul>
-              Considering that review sentiment labels can be very subjective, as evidenced by our manually labelled data already only having an 81% inter-annotator agreement, 
-              an accuracy of 72% is already a decently high score. We thus used the trained BERT model to label the rest of the unlabelled data.
+              We thus used the highest accuracy model, BERT, to label the rest of the unlabelled data.
             </p>
           </Typography>
           { /*<ModelAccuracy /> */ }
