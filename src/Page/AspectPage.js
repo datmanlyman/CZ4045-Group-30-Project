@@ -31,6 +31,7 @@ import DataTable from "../Components/DataTable";
 import Piechart from "../Components/Piechart";
 import BarChart from "../Components/BarChart";
 import Switch from "@mui/material/Switch";
+import MultiplePieCharts from "../Components/MultiplePieCharts";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -731,9 +732,17 @@ export default function AspectPage() {
           >
             Search Overview
           </Typography>
-          <Piechart counts={getSentimentCounts()} />
+          <Piechart
+            counts={getSentimentCounts()}
+            title="Sentiment Distribution"
+            title_variant="h5"
+            tooltip_title="Sentiment distribution of current search"
+            tooltip_text="Based on sentiments predicted with our BERT model."
+            chart_styles={{ margin: "15px auto", width: "80%" }}
+          />
           <WordClouds company={company} />
           <BarChart data={getBarChartData(company)} />
+          <MultiplePieCharts company={company} />
         </Grid>
       </Grid>
       <Fab

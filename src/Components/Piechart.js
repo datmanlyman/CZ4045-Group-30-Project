@@ -17,8 +17,15 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 }));
 
 export default function Piechart(props) {
-  const { counts } = props;
-  const [ negative, neutral, positive] = counts;
+  const {
+    counts,
+    title,
+    tooltip_title,
+    tooltip_text,
+    title_variant,
+    chart_styles,
+  } = props;
+  const [negative, neutral, positive] = counts;
 
   let total = positive + neutral + negative;
 
@@ -27,19 +34,17 @@ export default function Piechart(props) {
       <HtmlTooltip
         title={
           <React.Fragment>
-            <Typography color="inherit">
-              Sentiment distribution of current search
-            </Typography>
+            <Typography color="inherit">{tooltip_title}</Typography>
             {/* <em>{"And here's"}</em> <b>{"some"}</b> <u>{"amazing content"}</u>.{" "} */}
-            {"Based on sentiments predicted with our BERT model."}
+            {tooltip_text}
           </React.Fragment>
         }
       >
-        <Typography variant="h5" gutterBottom>
-          Sentiment Distribution
+        <Typography variant={title_variant} gutterBottom>
+          {title}
         </Typography>
       </HtmlTooltip>
-      <div style={{ margin: "15px auto", width: "80%" }}>
+      <div style={chart_styles}>
         <PieChart
           data={[
             { title: "Positive", value: positive, color: "#adebad" },
