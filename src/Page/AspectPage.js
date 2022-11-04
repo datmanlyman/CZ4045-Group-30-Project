@@ -676,18 +676,23 @@ export default function AspectPage() {
           >
             Reviews
           </Typography>
-          <div style={{ textAlign: "right" }}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={isTableView}
-                  onChange={(event) => setIsTableView(event.target.checked)}
-                  name="istableview"
-                />
-              }
-              label="Table View"
-            />
-          </div>
+          <Grid container item>
+            <Grid item xs={6} style={{ paddingLeft: "10px", margin: "auto" }}>
+              {`${currentReviews.length} Reviews`}
+            </Grid>
+            <Grid item xs={6} style={{ textAlign: "right" }}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isTableView}
+                    onChange={(event) => setIsTableView(event.target.checked)}
+                    name="istableview"
+                  />
+                }
+                label="Table View"
+              />
+            </Grid>
+          </Grid>
 
           {isTableView ? (
             <DataTable company={company} reviews={currentReviews} />
