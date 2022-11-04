@@ -71,6 +71,21 @@ import {
 } from "../data/index";
 import { Typography } from "@mui/material";
 
+import { styled } from "@mui/material/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+
+const HtmlTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "#f5f5f9",
+    color: "rgba(0, 0, 0, 0.87)",
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: "1px solid #dadde9",
+  },
+}));
+
 export default function WordClouds(props) {
   const { company } = props;
   var img1 = overall_positive;
@@ -220,7 +235,18 @@ export default function WordClouds(props) {
       </Grid> */}
 
       <Grid item xs={4}>
-        <Typography variant="h5">Negative Sentiment</Typography>
+        <HtmlTooltip
+          title={
+            <React.Fragment>
+              <Typography color="inherit">
+                {`Frequent words in ${company} negative reviews`}
+              </Typography>
+              {"Based on sentiments predicted with our BERT model."}
+            </React.Fragment>
+          }
+        >
+          <Typography variant="h5">Negative Sentiment</Typography>
+        </HtmlTooltip>
         <img
           className="wordCloud"
           src={img3}
@@ -229,7 +255,19 @@ export default function WordClouds(props) {
         />
       </Grid>
       <Grid item xs={4}>
-        <Typography variant="h5">Neutral Sentiment</Typography>
+        <HtmlTooltip
+          title={
+            <React.Fragment>
+              <Typography color="inherit">
+                {`Frequent words in ${company} neutral reviews`}
+              </Typography>
+
+              {"Based on sentiments predicted with our BERT model."}
+            </React.Fragment>
+          }
+        >
+          <Typography variant="h5">Neutral Sentiment</Typography>
+        </HtmlTooltip>
         <img
           className="wordCloud"
           src={img2}
@@ -238,7 +276,18 @@ export default function WordClouds(props) {
         />
       </Grid>
       <Grid item xs={4}>
-        <Typography variant="h5">Positive Sentiment</Typography>
+        <HtmlTooltip
+          title={
+            <React.Fragment>
+              <Typography color="inherit">
+                {`Frequent words in ${company} positive reviews`}
+              </Typography>
+              {"Based on sentiments predicted with our BERT model."}
+            </React.Fragment>
+          }
+        >
+          <Typography variant="h5">Positive Sentiment</Typography>
+        </HtmlTooltip>
         <img
           className="wordCloud"
           src={img1}

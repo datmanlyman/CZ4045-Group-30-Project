@@ -12,8 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Report />} />
           <Route path="/report" element={<Report />} />
-          <Route path="/data" element={<Data />} />
-          <Route path="/aspect-based" element={<AspectPage />} />
+          <Route path="/dashboard" element={<AspectPage />} />
         </Routes>
       </div>
     </>

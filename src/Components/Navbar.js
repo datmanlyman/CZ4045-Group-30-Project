@@ -20,10 +20,8 @@ export default function Navbar() {
         Glassdoor Analysis
       </Link>
       <ul>
-        <CustomLink to="/report">Report</CustomLink>
-        <CustomLink to="/data">Company Data</CustomLink>
-        <CustomLink to="/aspect-based">ABSA</CustomLink>
-        <CustomLink to="/model">Model Data</CustomLink>
+        <CustomLink to="/report">About</CustomLink>
+        <CustomLink to="/dashboard">Dashboard</CustomLink>
       </ul>
     </nav>
   );

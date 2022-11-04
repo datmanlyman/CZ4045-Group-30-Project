@@ -30,6 +30,7 @@ import WordClouds from "../Components/WordClouds";
 import DataTable from "../Components/DataTable";
 import Piechart from "../Components/Piechart";
 import BarChart from "../Components/BarChart";
+import Switch from "@mui/material/Switch";
 
 const useStyles = makeStyles()((theme) => {
   return {
@@ -162,6 +163,7 @@ export default function AspectPage() {
     lastIndex: 0,
     isComplete: false,
   });
+  const [isTableView, setIsTableView] = useState(false);
 
   useEffect(() => {
     updateCurrentReviews();
@@ -326,7 +328,7 @@ export default function AspectPage() {
   };
 
   const averageRatings = {};
-  
+
   const setBarChartData = (company) => {
     const companyData = {};
     var countR = 0;
@@ -363,7 +365,8 @@ export default function AspectPage() {
       }
     });
     companyData["companyName"] = company;
-    companyData["averageInterview"] = parseFloat(interview) / parseFloat(countI);
+    companyData["averageInterview"] =
+      parseFloat(interview) / parseFloat(countI);
     companyData["averageBenefit"] = parseFloat(benefit) / parseFloat(countB);
     companyData["averageReview"] = parseFloat(reviewCount) / parseFloat(countR);
     averageRatings[company] = companyData;
@@ -405,9 +408,15 @@ export default function AspectPage() {
       });
 
       allData["companyName"] = "all";
-      allData["averageInterview"] = (countI) ? parseFloat(interview) / parseFloat(countI) : 0;
-      allData["averageBenefit"] = (countB) ? parseFloat(benefit) / parseFloat(countB) : 0;
-      allData["averageReview"] = (countR) ? parseFloat(reviewCount) / parseFloat(countR) : 0;
+      allData["averageInterview"] = countI
+        ? parseFloat(interview) / parseFloat(countI)
+        : 0;
+      allData["averageBenefit"] = countB
+        ? parseFloat(benefit) / parseFloat(countB)
+        : 0;
+      allData["averageReview"] = countR
+        ? parseFloat(reviewCount) / parseFloat(countR)
+        : 0;
       averageRatings["all"] = allData;
     }
   };
@@ -655,7 +664,6 @@ export default function AspectPage() {
           </Accordion>
         </Grid>
         <Grid item xs={12} md={5}>
-          {/* <DataTable company={company} reviews={currentReviews} /> */}
           <Typography
             variant="h5"
             align="center"
@@ -668,25 +676,42 @@ export default function AspectPage() {
           >
             Reviews
           </Typography>
-          <div>
-            {currentReviews &&
-              currentReviews
-                .slice(0, dynamicLoading.lastIndex)
-                .map((review) => (
-                  <AspectCard
-                    key={`${review.company}-${review.post_title}-${review.location}-${review.text}`}
-                    review={review}
-                  />
-                ))}
-
-            {dynamicLoading.isComplete ? (
-              ""
-            ) : (
-              <Button variant="contained" fullWidth onClick={updateLastIndex}>
-                Load More
-              </Button>
-            )}
+          <div style={{ textAlign: "right" }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isTableView}
+                  onChange={(event) => setIsTableView(event.target.checked)}
+                  name="istableview"
+                />
+              }
+              label="Table View"
+            />
           </div>
+
+          {isTableView ? (
+            <DataTable company={company} reviews={currentReviews} />
+          ) : (
+            <div>
+              {currentReviews &&
+                currentReviews
+                  .slice(0, dynamicLoading.lastIndex)
+                  .map((review) => (
+                    <AspectCard
+                      key={`${review.company}-${review.post_title}-${review.location}-${review.text}`}
+                      review={review}
+                    />
+                  ))}
+
+              {dynamicLoading.isComplete ? (
+                ""
+              ) : (
+                <Button variant="contained" fullWidth onClick={updateLastIndex}>
+                  Load More
+                </Button>
+              )}
+            </div>
+          )}
         </Grid>
         <Grid item xs={12} md={4}>
           <Typography
