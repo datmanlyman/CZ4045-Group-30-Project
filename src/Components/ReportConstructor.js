@@ -108,10 +108,10 @@ export default function CustomizedTimeline() {
                 <li>Stacked Ensemble: 70%</li>
                 <li>BERT Model: 72%</li>
               </ul>
-              We thus used the highest accuracy model, BERT, to label the rest of the unlabelled data.
+              We thus used the highest accuracy model, BERT, to label the rest of the unlabelled data. More info can be found below.
             </p>
           </Typography>
-          { /*<ModelAccuracy /> */ }
+          <ModelAccuracy />
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
