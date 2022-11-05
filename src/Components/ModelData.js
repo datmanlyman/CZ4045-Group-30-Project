@@ -59,36 +59,127 @@ const rowsAccuracy = [
 
 export function ModelAccuracy() {
   return (
-    <div style={{ margin: "10px 0" }}>
-      {/* className='component'> */}
-      <h3 key="modelAccuracy">BERT Accuracy: 73%</h3>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: "100%" }} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Sentiment</StyledTableCell>
-              <StyledTableCell align="right">Precision</StyledTableCell>
-              <StyledTableCell align="right">Recall</StyledTableCell>
-              <StyledTableCell align="right">F1-Score</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rowsAccuracy[3].map((row) => (
-              <StyledTableRow
-                key={row.sentiment + row.f1 + row.precision + row.precision}
-              >
-                <StyledTableCell component="th" scope="row">
-                  {row.sentiment}
-                </StyledTableCell>
-                <StyledTableCell align="right">{row.precision}</StyledTableCell>
-                <StyledTableCell align="right">{row.recall}</StyledTableCell>
-                <StyledTableCell align="right">{row.f1}</StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <>
+      <div style={{margin: "5px 0"}}>
+        <p>
+          Our classification when we started:
+        </p>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: "100%" }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Model</StyledTableCell>
+                <StyledTableCell align="right">Accuracy (%)</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row">
+                    Vader
+                  </StyledTableCell>
+                  <StyledTableCell align="right">40</StyledTableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row">
+                    Text Blob
+                  </StyledTableCell>
+                  <StyledTableCell align="right">49</StyledTableCell>
+                </StyledTableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+      <div style={{ margin: "5px 0" }}>
+        <p>However, we found the accuraacy low, so to improve the accuracy we tried:</p>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: "100%" }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Model</StyledTableCell>
+                <StyledTableCell align="right">Accuracy (%)</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row">
+                    Logistic Regression
+                  </StyledTableCell>
+                  <StyledTableCell align="right">67</StyledTableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row">
+                    XGBoost
+                  </StyledTableCell>
+                  <StyledTableCell align="right">69</StyledTableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row">
+                    Random Forest
+                  </StyledTableCell>
+                  <StyledTableCell align="right">66</StyledTableCell>
+                </StyledTableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+      <div style={{ margin: "5px 0"}}>
+        <p>We then tried Stacked Ensemble and BERT Model:</p>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: "100%" }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Model</StyledTableCell>
+                <StyledTableCell align="right">Accuracy (%)</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row">
+                    Stacked Ensemble
+                  </StyledTableCell>
+                  <StyledTableCell align="right">70</StyledTableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row">
+                    <b>BERT</b>
+                  </StyledTableCell>
+                  <StyledTableCell align="right"><b>72</b></StyledTableCell>
+                </StyledTableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <p>We thus used the highest accuracy model, BERT, to label the rest of the unlabelled data. More info can be found below:</p>
+      </div>
+      <div style={{ margin: "5px 0" }}>
+        <h3 key="modelAccuracy">BERT Accuracy: 72%</h3>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: "100%" }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Sentiment</StyledTableCell>
+                <StyledTableCell align="right">Precision</StyledTableCell>
+                <StyledTableCell align="right">Recall</StyledTableCell>
+                <StyledTableCell align="right">F1-Score</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rowsAccuracy[3].map((row) => (
+                <StyledTableRow
+                  key={row.sentiment + row.f1 + row.precision + row.precision}
+                >
+                  <StyledTableCell component="th" scope="row">
+                    {row.sentiment}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{row.precision}</StyledTableCell>
+                  <StyledTableCell align="right">{row.recall}</StyledTableCell>
+                  <StyledTableCell align="right">{row.f1}</StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
     </div>
+    </>
   );
 }
 

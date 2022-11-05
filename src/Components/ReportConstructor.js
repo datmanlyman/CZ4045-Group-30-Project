@@ -90,27 +90,6 @@ export default function CustomizedTimeline() {
           <Typography variant="h6" component="span">
             Classification
           </Typography>
-          <Typography>
-            <p>
-              Our classification accuracy when we started was:
-              <ul>
-                <li>Vader: 40% Accuracy</li>
-                <li>TextBlob: 49% Accuracy</li>
-              </ul>
-              However, we found the accuracy low, so to improve the accuracy we tried:
-              <ul>
-                <li>Logistic Regression: 67% Accuracy</li>
-                <li>XGBoost: 69% Accuracy</li>
-                <li>Random Forest: 66% Accuracy</li>
-              </ul>
-              We then tried a Stacked Ensemble and BERT model:
-              <ul>
-                <li>Stacked Ensemble: 70%</li>
-                <li>BERT Model: 72%</li>
-              </ul>
-              We thus used the highest accuracy model, BERT, to label the rest of the unlabelled data. More info can be found below.
-            </p>
-          </Typography>
           <ModelAccuracy />
         </TimelineContent>
       </TimelineItem>
@@ -136,3 +115,4 @@ export default function CustomizedTimeline() {
     </Timeline>
   );
 }
+
