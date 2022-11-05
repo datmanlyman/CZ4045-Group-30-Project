@@ -67,6 +67,11 @@ export default function AspectPage() {
       sentiments: ["negative", "neutral", "positive"],
     },
     {
+      displayName: "Career",
+      name: "career",
+      sentiments: ["negative", "neutral", "positive"],
+    },
+    {
       displayName: "Management",
       name: "management",
       sentiments: ["negative", "neutral", "positive"],
@@ -96,11 +101,7 @@ export default function AspectPage() {
       name: "worklifebalance",
       sentiments: ["negative", "neutral", "positive"],
     },
-    {
-      displayName: "Career",
-      name: "career",
-      sentiments: ["negative", "neutral", "positive"],
-    },
+
     {
       displayName: "Learning",
       name: "learning",
