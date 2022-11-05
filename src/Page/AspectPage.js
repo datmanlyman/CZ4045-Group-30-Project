@@ -53,7 +53,7 @@ const useStyles = makeStyles()((theme) => {
 export default function AspectPage() {
   const { classes } = useStyles();
   let reviews = dataJSON;
-  let reviewIndexIncrement = 5;
+  let reviewIndexIncrement = 6;
 
   const initialSentiments = [
     {
@@ -160,6 +160,7 @@ export default function AspectPage() {
   });
   const [ratingFilter, setRatingFilter] = useState([1, 5]);
   const [currentReviews, setCurrentReviews] = useState([]);
+  const [generalFilteredReviews, setGeneralFilteredReviews] = useState([]);
   const [dynamicLoading, setDynamicLoading] = useState({
     lastIndex: 0,
     isComplete: false,
@@ -184,7 +185,13 @@ export default function AspectPage() {
   };
 
   function updateCurrentReviews() {
-    let tmp = reviews.filter((review) => checkPassFilters(review));
+    let passedGeneralFilters = reviews.filter((review) =>
+      checkPassGeneralFilters(review)
+    );
+    setGeneralFilteredReviews(passedGeneralFilters);
+    let tmp = passedGeneralFilters.filter((review) =>
+      checkPassAspectFilters(review)
+    );
     setCurrentReviews(tmp);
     if (tmp.length > reviewIndexIncrement) {
       setDynamicLoading({ lastIndex: reviewIndexIncrement, isComplete: false });
@@ -219,8 +226,11 @@ export default function AspectPage() {
   // check number of reviews for each aspect sentiment, given the current filters
   function getCounts(aspectName) {
     let count = [0, 0, 0];
-    for (var i = 0; i < currentReviews.length; i++) {
-      let curReview = currentReviews[i];
+    // for (var i = 0; i < currentReviews.length; i++) {
+    // let curReview = currentReviews[i];
+    for (var i = 0; i < generalFilteredReviews.length; i++) {
+      let curReview = generalFilteredReviews[i];
+
       let matchingAspect = curReview.absa.filter(
         (aspectObj) => aspectObj.aspect === aspectName
       );
@@ -270,9 +280,7 @@ export default function AspectPage() {
     return count;
   }
 
-  // check if review should be shown with current filters
-  // absa: [{ aspect: "work", sentiment: "positive" }]
-  function checkPassFilters(review) {
+  function checkPassGeneralFilters(review) {
     if (
       (company !== "all" && review.company !== company) ||
       (!reviewSources.reviews && review.tab === "reviews") ||
@@ -289,7 +297,12 @@ export default function AspectPage() {
     ) {
       return false;
     }
+    return true;
+  }
 
+  // check if review should be shown with current filters
+  // absa: [{ aspect: "work", sentiment: "positive" }]
+  function checkPassAspectFilters(review) {
     for (var i = 0; i < review.absa.length; i++) {
       let reviewAspect = review.absa[i];
       // check filters
