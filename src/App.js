@@ -11,7 +11,7 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<Report />} />
-          <Route path="/report" element={<Report />} />
+          { /* <Route path="/report" element={<Report />} /> */ }
           <Route path="/dashboard" element={<AspectPage />} />
         </Routes>
       </div>

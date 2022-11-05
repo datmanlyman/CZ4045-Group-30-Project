@@ -16,11 +16,10 @@ function CustomLink({ to, children, ...props }) {
 export default function Navbar() {
   return (
     <nav className="nav">
-      <Link to="/report" className="site-title">
+      <Link to="/" className="site-title">
         Glassdoor Analysis
       </Link>
       <ul>
-        <CustomLink to="/report">About</CustomLink>
         <CustomLink to="/dashboard">Dashboard</CustomLink>
       </ul>
     </nav>
