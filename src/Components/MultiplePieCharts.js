@@ -49,13 +49,15 @@ export default function MultiplePieCharts(props) {
         title={
           <React.Fragment>
             <Typography color="inherit">
-              {`Sentiment distribution in ${company} by reviewer role`}
+              {`Sentiment distribution in ${company} by reviewer seniority level`}
             </Typography>
             {"Based on sentiments predicted with our BERT model."}
           </React.Fragment>
         }
       >
-        <Typography variant="h5">Sentiment Distribution by Role</Typography>
+        <Typography variant="h5">
+          Sentiment Distribution by Seniority Level
+        </Typography>
       </HtmlTooltip>
       <Grid container spacing={2}>
         <Grid item style={{ width: "50%" }} align="center">

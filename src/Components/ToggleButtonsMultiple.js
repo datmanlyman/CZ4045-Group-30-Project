@@ -33,7 +33,7 @@ export default function ToggleButtonsMultiple(props) {
         variant="contained"
         value="negative"
         aria-label={`${name}-negative`}
-        style={{ flexDirection: "column" }}
+        style={{ flexDirection: "column", padding: "5px" }}
       >
         <SentimentDissatisfiedRoundedIcon />
         <Typography variant="subtitle1">{counts[0]}</Typography>
@@ -42,7 +42,7 @@ export default function ToggleButtonsMultiple(props) {
         color="primary"
         value="neutral"
         aria-label={`${name}-neutral`}
-        style={{ flexDirection: "column" }}
+        style={{ flexDirection: "column", padding: "5px" }}
       >
         <SentimentNeutralRoundedIcon />
         <Typography variant="subtitle1">{counts[1]}</Typography>
@@ -51,7 +51,7 @@ export default function ToggleButtonsMultiple(props) {
         color="primary"
         value="positive"
         aria-label={`${name}-positive`}
-        style={{ flexDirection: "column" }}
+        style={{ flexDirection: "column", padding: "5px" }}
       >
         <SentimentSatisfiedRoundedIcon />
         <Typography variant="subtitle1">{counts[2]}</Typography>
