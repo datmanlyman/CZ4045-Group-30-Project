@@ -33,6 +33,9 @@ import BarChart from "../Components/BarChart";
 import Switch from "@mui/material/Switch";
 import MultiplePieCharts from "../Components/MultiplePieCharts";
 
+import { styled } from "@mui/material/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+
 const useStyles = makeStyles()((theme) => {
   return {
     root: {
@@ -50,6 +53,18 @@ const useStyles = makeStyles()((theme) => {
   };
 });
 
+const HtmlTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "#f5f5f9",
+    color: "rgba(0, 0, 0, 0.87)",
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: "1px solid #dadde9",
+  },
+}));
+
 export default function AspectPage() {
   const { classes } = useStyles();
   let reviews = dataJSON;
@@ -60,62 +75,136 @@ export default function AspectPage() {
       displayName: "Company",
       name: "company",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: [
+        "company",
+        "business",
+        "industry",
+        "direction",
+        "brand",
+        "organisation",
+        "corporate",
+      ],
     },
     {
       displayName: "Work",
       name: "work",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: ["work", "working", "job", "process", "project"],
     },
     {
       displayName: "Career",
       name: "career",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: [
+        "experience",
+        "career",
+        "progression",
+        "promotion",
+        "promoted",
+        "recognition",
+      ],
     },
     {
       displayName: "Management",
       name: "management",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: [
+        "management",
+        "manager",
+        "senior",
+        "leadership",
+        "leader",
+        "ceo",
+        "boss",
+        "director",
+        "supervisor",
+        "executive",
+        "manage",
+        "employer",
+      ],
     },
     {
       displayName: "Staff",
       name: "staff",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: [
+        "team",
+        "staff",
+        "colleague",
+        "department",
+        "politics",
+        "people",
+      ],
     },
     {
       displayName: "Compensation",
       name: "compensation",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: [
+        "pay",
+        "salary",
+        "bonus",
+        "package",
+        "increment",
+        "paid",
+        "compensation",
+        "remuneration",
+      ],
     },
     {
       displayName: "Culture",
       name: "culture",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: ["environment", "culture", "communication", "atmosphere"],
     },
     {
       displayName: "Facilities",
       name: "facilities",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: [
+        "office",
+        "location",
+        "food",
+        "transport",
+        "meal",
+        "facility",
+        "campus",
+        "canteen",
+        "gym",
+        "workplace",
+      ],
     },
     {
       displayName: "Work Life Balance",
       name: "worklifebalance",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: ["balance", "worklifebalance", "workload"],
     },
 
     {
       displayName: "Learning",
       name: "learning",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: [
+        "learn",
+        "training",
+        "learning",
+        "growth",
+        "development",
+        "advancement",
+      ],
     },
     {
       displayName: "Interview",
       name: "interview",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: ["interview", "interviewer", "recruiter"],
     },
     {
       displayName: "Benefits",
       name: "benefits",
       sentiments: ["negative", "neutral", "positive"],
+      keywords: ["benefit", "welfare", "holiday", "vacation"],
     },
   ];
 
@@ -662,14 +751,24 @@ export default function AspectPage() {
                       key={aspectSentiment.name}
                       className={classes.aspectFilter}
                     >
-                      <Typography variant="p" component="p" gutterBottom>
-                        {aspectSentiment.displayName}
-                      </Typography>
+                      <HtmlTooltip
+                        title={
+                          <React.Fragment>
+                            <Typography color="inherit">{`Keywords for ${aspectSentiment.displayName}`}</Typography>
+                            {aspectSentiment.keywords
+                              .toString()
+                              .replaceAll(",", ", ")}
+                          </React.Fragment>
+                        }
+                      >
+                        <Typography variant="p" component="p" gutterBottom>
+                          {aspectSentiment.displayName}
+                        </Typography>
+                      </HtmlTooltip>
                       <ToggleButtonsMultiple
                         key={aspectSentiment.name}
                         aspectSentiment={aspectSentiment}
                         parentCallback={setAspectFilters}
-                        // counts={2}
                         counts={getCounts(aspectSentiment.name)}
                       />
                     </div>
