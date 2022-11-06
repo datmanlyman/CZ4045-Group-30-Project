@@ -7,7 +7,6 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import Typography from "@mui/material/Typography";
-import { Button } from "react-bootstrap";
 import { ModelAccuracy } from "../Components/ModelData";
 
 export default function CustomizedTimeline() {
@@ -75,6 +74,7 @@ export default function CustomizedTimeline() {
               role="button"
               style={{ margin: "10px" }}
               target="_blank"
+              rel="noreferrer"
             >
               Overall Reviews
             </a>
@@ -84,6 +84,7 @@ export default function CustomizedTimeline() {
               role="button"
               style={{ margin: "10px" }}
               target="_blank"
+              rel="noreferrer"
             >
               Interviews
             </a>
@@ -93,6 +94,7 @@ export default function CustomizedTimeline() {
               role="button"
               style={{ margin: "10px" }}
               target="_blank"
+              rel="noreferrer"
             >
               Benefits
             </a>

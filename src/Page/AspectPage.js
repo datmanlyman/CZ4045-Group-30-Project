@@ -809,7 +809,7 @@ export default function AspectPage() {
           </Grid>
 
           {isTableView ? (
-            <DataTable company={company} reviews={currentReviews} />
+            <DataTable reviews={currentReviews} />
           ) : (
             <div>
               {currentReviews &&

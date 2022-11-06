@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import CanvasJSReact from "../assets/canvasjs.react";
 import { Typography } from "@mui/material";
 
@@ -18,7 +18,6 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 }));
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-var CanvasJS = CanvasJSReact.CanvasJS;
 
 export default function BarChart(props) {
   const { data } = props;
