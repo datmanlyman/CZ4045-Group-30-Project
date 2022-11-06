@@ -39,8 +39,8 @@ export default function CustomizedTimeline() {
                 <li>Different standards for each rating</li>
                 <li>Different cultures</li>
               </ul>
-              Thus, we created a Sentimental Analysis (SA) to overcome these
-              possible issues.
+              Thus, we performed Sentiment Analysis (SA) to help overcome these
+              issues.
             </p>
           </Typography>
         </TimelineContent>
@@ -66,17 +66,36 @@ export default function CustomizedTimeline() {
               public API is not provided to access their review data, we instead
               used Python, BeautifulSoup and Selenium to crawl and parse data
               from their webpages. For each company, we decided to scrape
-              reviews from three subpages:
+              reviews from three subpages. <br />
+              Example links:
             </p>
-            <Button variant="danger" style={{ margin: "10px" }}>
+            <a
+              class="btn btn-warning"
+              href="https://www.glassdoor.sg/Reviews/Dyson-Reviews-E214340.htm"
+              role="button"
+              style={{ margin: "10px" }}
+              target="_blank"
+            >
               Overall Reviews
-            </Button>
-            <Button variant="danger" style={{ margin: "10px" }}>
+            </a>
+            <a
+              class="btn btn-warning"
+              href="https://www.glassdoor.sg/Interview/Dyson-Interview-Questions-E214340.htm"
+              role="button"
+              style={{ margin: "10px" }}
+              target="_blank"
+            >
               Interviews
-            </Button>
-            <Button variant="danger" style={{ margin: "10px" }}>
+            </a>
+            <a
+              class="btn btn-warning"
+              href="https://www.glassdoor.sg/Benefits/Dyson-Singapore-Benefits-EI_IE214340.0,5_IL.6,15_IN217.htm"
+              role="button"
+              style={{ margin: "10px" }}
+              target="_blank"
+            >
               Benefits
-            </Button>
+            </a>
           </Typography>
         </TimelineContent>
       </TimelineItem>
@@ -105,9 +124,12 @@ export default function CustomizedTimeline() {
           </Typography>
           <Typography>
             <p>
-              After preprocessing, we identified 12 equivalence classes in our corpus by grouping related words together.
-              We thus tried Aspect Based Sentimental Analysis to identify each reviews aspect and their sentiment.
-              It can be shown in action through the filters in the "Report" page.
+              After preprocessing, we identified twelve aspect categories in our
+              corpus by grouping related words together. <br /> We thus explored
+              aspect-based sentiment analysis (ABSA) to identify the aspects
+              mentioned in each review and their corresponding sentiment.
+              <br /> The usefulness of our ABSA results can be seen in action
+              using the aspect filters in our Dashboard.
             </p>
           </Typography>
         </TimelineContent>
@@ -115,4 +137,3 @@ export default function CustomizedTimeline() {
     </Timeline>
   );
 }
-
